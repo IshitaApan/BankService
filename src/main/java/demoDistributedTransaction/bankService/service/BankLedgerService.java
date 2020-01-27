@@ -12,6 +12,7 @@ import demoDistributedTransaction.bankService.repository.BankMasterRepository;
 import demoDistributedTransaction.bankService.BankLedger;
 import demoDistributedTransaction.bankService.BankMaster;
 import demoDistributedTransaction.bankService.rabbitmq.CustomerLedger;
+//import demoDistributedTransaction.bankService.rabbitmq.RabbitMQSender;
 
 @Service
 public class BankLedgerService {
@@ -20,6 +21,9 @@ public class BankLedgerService {
 	
 	@Autowired
 	private BankMasterRepository bankMasterRepository;
+	
+//	@Autowired
+//	private RabbitMQSender rabbitMQSender;
 
 	private BankLedger bankLedger;
 	
@@ -62,6 +66,7 @@ public class BankLedgerService {
 		
 		bankMasterRepository.save(bankMaster);
 		bankLedgerRepository.save(bankLedger);
+		//rabbitMQSender.send("Change status from pending to completed");
 	}
 	
 	public void createBankLedgerUsingCustomerLedger(CustomerLedger incomingCustomerLedger) {
