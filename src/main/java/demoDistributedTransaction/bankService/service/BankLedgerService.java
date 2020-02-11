@@ -35,8 +35,11 @@ public class BankLedgerService {
 	public Optional<BankLedger> getFromBankLedger(Long id) {
 		return bankLedgerRepository.findById(id);
 	}
-	
 	public void addToBankLedger(BankLedger bankLedger) {
+		bankLedgerRepository.save(bankLedger);
+	}
+	
+	public void addToBankLedger(BankLedger bankLedger, CustomerLedger incomingCustomerLedger) {
 		Long bankId = bankLedger.getBankId();
 		String transactionType = bankLedger.getTransactionType();
 		Double bankLedgerAmount = bankLedger.getAmount();
@@ -63,9 +66,10 @@ public class BankLedgerService {
 			bankMaster.setAmount(bankMasterAmount+bankLedgerAmount);
 		}
 		
-		bankMasterRepository.save(bankMaster);
 		bankLedgerRepository.save(bankLedger);
-		rabbitMQSender.send("Change status from pending to completed");
+		bankMasterRepository.save(bankMaster);
+		String status = "completed";
+		rabbitMQSender.send(status, incomingCustomerLedger);
 	}
 	
 	public void createBankLedgerUsingCustomerLedger(CustomerLedger incomingCustomerLedger) {

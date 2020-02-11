@@ -20,7 +20,7 @@ public class RabbitMQReceiver {
 		System.out.println("Received msg:\n(batchId,transactionType,amount)="+incomingCustomerLedger.getBatchId()+","+incomingCustomerLedger.getTransactionType()+","+incomingCustomerLedger.getAmount());
 		BankLedger bankLedger=new BankLedger();
 		bankLedger = createBankLedgerUsingCustomerLedger(incomingCustomerLedger);
-		bankLedgerService.addToBankLedger(bankLedger);
+		bankLedgerService.addToBankLedger(bankLedger,incomingCustomerLedger);
 		
 		//bankLedgerService.createBankLedgerUsingCustomerLedger(incomingCustomerLedger);
 		
